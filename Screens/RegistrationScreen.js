@@ -8,12 +8,8 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
+import initialState from "./initialState";
 
-const initialState = {
-  email: "",
-  password: "",
-  login: "",
-};
 
 const RegistrationScreen = () => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
