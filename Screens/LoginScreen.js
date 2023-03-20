@@ -54,6 +54,7 @@ const LoginScreen = () => {
               setState((prevState) => ({ ...prevState, email: value }))
             }
             value={state.email}
+            placeholderTextColor={"#BDBDBD"}
           />
           <TextInput
             style={styles.input}
@@ -64,6 +65,7 @@ const LoginScreen = () => {
               setState((prevState) => ({ ...prevState, password: value }))
             }
             value={state.password}
+            placeholderTextColor={"#BDBDBD"}
           />
         </View>
       </KeyboardAvoidingView>
@@ -98,12 +100,11 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     height: 50,
-    borderColor: "#F6F6F6",
-    backgroundColor: "#E8E8E8",
+    borderColor: "#E8E8E8",
+    backgroundColor: "#F6F6F6",
     color: "#212121",
     borderRadius: 8,
     padding: 16,
-    placeholderTextColor: "#BDBDBD",
   },
   textReg: {
     color: "#212121",
