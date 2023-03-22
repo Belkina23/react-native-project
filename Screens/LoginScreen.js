@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
   },
   form: {
     display: "flex",
-    gap: 16,
     marginHorizontal: 16,
   },
   input: {
@@ -105,37 +104,39 @@ const styles = StyleSheet.create({
     color: "#212121",
     borderRadius: 8,
     padding: 16,
+    marginBottom: 16
   },
   textReg: {
     color: "#212121",
     fontSize: 30,
     textAlign: "center",
-    fontWeight: 500,
+    fontWeight: "500",
     marginTop: 32,
+    marginBottom: 32
   },
   registerCont: {
     marginHorizontal: 16,
     display: "flex",
-    gap: 16,
+    marginBottom: 78,
   },
   btnReg: {
     backgroundColor: "#FF6C00",
     padding: 16,
     borderRadius: 100,
     alignItems: "center",
-    marginTop: 43,
+    marginTop: 27,
+    marginBottom: 16
   },
   textBtn: {
     color: "#fff",
-    fontWeight: 400,
+    fontWeight: "400",
     fontSize: 16,
   },
   textLog: {
     color: "#1B4371",
     textAlign: "center",
-    fontWeight: 400,
+    fontWeight: "400",
     fontSize: 16,
-    marginBottom: 78,
   },
 });
 
