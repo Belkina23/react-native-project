@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import initialState from "./initialState";
 
-
 const LoginScreen = () => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
@@ -39,6 +39,11 @@ const LoginScreen = () => {
     setState(initialState);
   };
 
+  const handleFocus = () => {
+    setIsShowKeyboard(true);
+    setIsFocused(true);
+  };
+
   return (
     <View style={styles.conteinerForm}>
       <KeyboardAvoidingView
@@ -47,9 +52,10 @@ const LoginScreen = () => {
         <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 0 }}>
           <Text style={styles.textReg}>Войти</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, isFocused && { borderColor: "#FF6C00" }]}
             placeholder="Адрес электронной почты"
-            onFocus={() => setIsShowKeyboard(true)}
+            onFocus={handleFocus}
+            onBlur={() => setIsFocused(false)}
             onChangeText={(value) =>
               setState((prevState) => ({ ...prevState, email: value }))
             }
@@ -57,10 +63,11 @@ const LoginScreen = () => {
             placeholderTextColor={"#BDBDBD"}
           />
           <TextInput
-            style={styles.input}
+            style={[styles.input, isFocused && { borderColor: "#FF6C00" }]}
             placeholder="Пароль"
             secureTextEntry={true}
-            onFocus={() => setIsShowKeyboard(true)}
+            onFocus={handleFocus}
+            onBlur={() => setIsFocused(false)}
             onChangeText={(value) =>
               setState((prevState) => ({ ...prevState, password: value }))
             }
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
     color: "#212121",
     borderRadius: 8,
     padding: 16,
-    marginBottom: 16
+    marginBottom: 16,
   },
   textReg: {
     color: "#212121",
@@ -112,7 +119,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "500",
     marginTop: 32,
-    marginBottom: 32
+    marginBottom: 32,
   },
   registerCont: {
     marginHorizontal: 16,
@@ -125,7 +132,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: "center",
     marginTop: 27,
-    marginBottom: 16
+    marginBottom: 16,
   },
   textBtn: {
     color: "#fff",
