@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
+  ImageBackground
 } from "react-native";
 import initialState from "./initialState";
 
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
@@ -40,6 +41,10 @@ const RegistrationScreen = () => {
   };
 
   return (
+    <ImageBackground
+          style={styles.image}
+          source={require("./img/photo-bg.jpg")}
+        >
     <View style={styles.conteinerForm}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -85,14 +90,19 @@ const RegistrationScreen = () => {
           <TouchableOpacity
             style={styles.btnReg}
             activeOpacity={0.8}
-            onPress={handleRegister}
+            onPress={() => navigation.navigate("Home")}
           >
             <Text style={styles.textBtn}>Зарегестрироваться</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate("Login")}>
           <Text style={styles.textLog}>Уже есть аккаунт? Войти</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
+    </ImageBackground>
   );
 };
 
@@ -102,8 +112,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "flex-end",
+  },
   form: {
-    display: "flex",
     marginHorizontal: 16,
   },
   input: {
@@ -126,7 +140,6 @@ const styles = StyleSheet.create({
   },
   registerCont: {
     marginHorizontal: 16,
-    display: "flex",
     marginBottom: 78,
   },
   btnReg: {
