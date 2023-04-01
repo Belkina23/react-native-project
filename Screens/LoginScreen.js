@@ -7,11 +7,14 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import initialState from "./initialState";
+import { useDispatch } from "react-redux";
+import { logInUser } from "../redux/auth/authSlice";
 
 const LoginScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [state, setState] = useState(initialState);
@@ -36,7 +39,8 @@ const LoginScreen = ({ navigation }) => {
   }, []);
 
   const handleRegister = () => {
-    console.log(state);
+    dispatch(logInUser(state));
+    navigation.navigate("Home");
     setState(initialState);
   };
 
@@ -47,60 +51,63 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-          style={styles.image}
-          source={require("./img/photo-bg.jpg")}
+      style={styles.image}
+      source={require("./img/photo-bg.jpg")}
+    >
+      <View style={styles.conteinerForm}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-    <View style={styles.conteinerForm}>
-      
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 0 }}>
-          <Text style={styles.textReg}>Войти</Text>
-          <TextInput
-            style={[styles.input, isFocused && { borderColor: "#FF6C00" }]}
-            placeholder="Адрес электронной почты"
-            onFocus={handleFocus}
-            onBlur={() => setIsFocused(false)}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, email: value }))
-            }
-            value={state.email}
-            placeholderTextColor={"#BDBDBD"}
-          />
-          <TextInput
-            style={[styles.input, isFocused && { borderColor: "#FF6C00" }]}
-            placeholder="Пароль"
-            secureTextEntry={true}
-            onFocus={handleFocus}
-            onBlur={() => setIsFocused(false)}
-            onChangeText={(value) =>
-              setState((prevState) => ({ ...prevState, password: value }))
-            }
-            value={state.password}
-            placeholderTextColor={"#BDBDBD"}
-          />
-        </View>
-      </KeyboardAvoidingView>
-
-      {!isShowKeyboard && (
-        <View style={styles.registerCont}>
-          <TouchableOpacity
-            style={styles.btnReg}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate("Home")}
+          <View
+            style={{ ...styles.form, marginBottom: isShowKeyboard ? 32 : 0 }}
           >
-            <Text style={styles.textBtn}>Войти</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.navigate("Registration")}>
-          <Text style={styles.textLog}>Нет аккаунта? Зарегестрироваться</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-     
-    </View>
+            <Text style={styles.textReg}>Войти</Text>
+            <TextInput
+              style={[styles.input, isFocused && { borderColor: "#FF6C00" }]}
+              placeholder="Адрес электронной почты"
+              onFocus={handleFocus}
+              onBlur={() => setIsFocused(false)}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, email: value }))
+              }
+              value={state.email}
+              placeholderTextColor={"#BDBDBD"}
+            />
+            <TextInput
+              style={[styles.input, isFocused && { borderColor: "#FF6C00" }]}
+              placeholder="Пароль"
+              secureTextEntry={true}
+              onFocus={handleFocus}
+              onBlur={() => setIsFocused(false)}
+              onChangeText={(value) =>
+                setState((prevState) => ({ ...prevState, password: value }))
+              }
+              value={state.password}
+              placeholderTextColor={"#BDBDBD"}
+            />
+          </View>
+        </KeyboardAvoidingView>
+
+        {!isShowKeyboard && (
+          <View style={styles.registerCont}>
+            <TouchableOpacity
+              style={styles.btnReg}
+              activeOpacity={0.8}
+              onPress={handleRegister}
+            >
+              <Text style={styles.textBtn}>Войти</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("Registration")}
+            >
+              <Text style={styles.textLog}>
+                Нет аккаунта? Зарегестрироваться
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
     </ImageBackground>
   );
 };

@@ -8,29 +8,26 @@ import {
   MaterialIcons,
   Ionicons,
 } from "@expo/vector-icons";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
+import { logOutUser } from "../redux/auth/authSlice";
 
-
-import RegistrationScreen from "./Screens/RegistrationScreen";
-import LoginScreen from "./Screens/LoginScreen";
-import PostsScreen from "./Screens/PostsScreen";
-import CreatePostsScreen from "./Screens/CreatePostsScreen";
-import ProfileScreen from "./Screens/ProfileScreen";
+import RegistrationScreen from "./RegistrationScreen";
+import LoginScreen from "./LoginScreen";
+import PostsScreen from "./PostsScreen";
+import CreatePostsScreen from "./CreatePostsScreen";
+import ProfileScreen from "./ProfileScreen";
 
 const MainStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 
 const CreatePostsHeaderLeft = () => {
   const navigation = useNavigation();
+  console.log("navigation: ", navigation);
 
-  const handleGoBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
+  const handleGoBack = () => {
+      navigation.goBack();
+  };
 
   return (
     <TouchableOpacity onPress={handleGoBack}>
@@ -39,46 +36,23 @@ const CreatePostsHeaderLeft = () => {
   );
 };
 
+export const RouterStack = () => {
+  const dispatch = useDispatch();
 
-export const useRoute = (isAuth) => {
-    const navigation = useNavigation();
+  const handleLogout = (navigation) => {
+    dispatch(logOutUser());
+    navigation.navigate("Registration");
+  };
 
-    const handleLogout = useCallback(() => {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }]
-      });
-    }, [navigation]);
-
-  if (!isAuth) {
-    return (
-      <MainStack.Navigator initialRouteName="Login">
-        <MainStack.Screen
-          name="Registration"
-          component={RegistrationScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <MainStack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name="Login"
-          component={LoginScreen}
-        />
-      </MainStack.Navigator>
-    );
-  }
-  return (
-    <MainTab.Navigator tabBarOptions={{ showLabel: false }}>
+  const MainScreens = ({ navigation }) => (
+    <MainTab.Navigator screenOptions={{ tabBarShowLabel: false }}>
       <MainTab.Screen
-        options={({ navigation }) => ({
+        options={() => ({
           tabBarIcon: ({ focused, size, color }) => (
             <AntDesign name="appstore-o" size={24} color="#212121" />
           ),
           headerRight: ({ focused, size, color }) => (
-            <TouchableOpacity onPress={handleLogout}>
+            <TouchableOpacity onPress={() => handleLogout(navigation)}>
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />
             </TouchableOpacity>
           ),
@@ -109,7 +83,7 @@ export const useRoute = (isAuth) => {
         name="Create"
         component={CreatePostsScreen}
       />
-      
+
       <MainTab.Screen
         options={{
           tabBarIcon: ({ focused, size, color }) => (
@@ -120,6 +94,32 @@ export const useRoute = (isAuth) => {
         component={ProfileScreen}
       />
     </MainTab.Navigator>
+  );
+
+  return (
+    <MainStack.Navigator initialRouteName="Registration">
+      <MainStack.Screen
+        name="Registration"
+        component={RegistrationScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainStack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Login"
+        component={LoginScreen}
+      />
+      <MainStack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="Home"
+        component={MainScreens}
+      />
+    </MainStack.Navigator>
   );
 };
 

@@ -9,19 +9,17 @@ import {
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
-import { useRoute } from "./router";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { RouterStack } from "./Screens/RouterStack";
 
 SplashScreen.preventAutoHideAsync();
 
-
 function App() {
-  const routing = useRoute({});
-
   const [fontsLoaded] = useFonts({
     "Roboto-Bold": require("./Screens/img/Roboto-Bold.ttf"),
     "Roboto-Regular": require("./Screens/img/Roboto-Regular.ttf"),
   });
-
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -34,15 +32,19 @@ function App() {
   }
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => Keyboard.dismiss()}
-      onLayout={onLayoutRootView}
-    >
-      <View style={styles.container}>
-        <NavigationContainer>{routing}</NavigationContainer>
-        <StatusBar style="auto" />
-      </View>
-    </TouchableWithoutFeedback>
+    <Provider store={store}>
+      <TouchableWithoutFeedback
+        onPress={() => Keyboard.dismiss()}
+        onLayout={onLayoutRootView}
+      >
+        <View style={styles.container}>
+          <NavigationContainer>
+            <RouterStack />
+          </NavigationContainer>
+          <StatusBar style="auto" />
+        </View>
+      </TouchableWithoutFeedback>
+    </Provider>
   );
 }
 
